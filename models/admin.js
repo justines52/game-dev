@@ -1,4 +1,3 @@
-// Admin.js
 const User = require('./User');
 const Game = require('./Game');
 

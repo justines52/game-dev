@@ -1,5 +1,3 @@
-
-// User.js
 const Game = require('./Game');
 
 class User {
@@ -8,7 +6,7 @@ class User {
         this.email = email;
         this.password = password;
         this.balance = balance;
-        this.ownedGames = ownedGames;
+        this.ownedGames = ownedGames || [];
         this.banned = false;
     }
 
@@ -18,47 +16,42 @@ class User {
 
     purchaseGame(game) {
         if (!(game instanceof Game)) {
-            console.log("Invalid game object.");
-            return;
+            return {success: false, message: "Invalid game object."};
         }
 
         if (this.isBanned()) {
-            console.log("You are banned and cannot purchase games.");
-            return;
+            return {success: false, message: "You are banned and cannot purchase games."};
         }
 
         if (this.ownedGames.some(g => g.title === game.title)) {
-            console.log(`You already own "${game.title}".`);
-            return;
+            return {success: false, message: `You already own "${game.title}".`};
         }
 
         if (this.balance >= game.price) {
             this.balance -= game.price;
             this.ownedGames.push(game);
-            console.log(`Successfully purchased "${game.title}"!`);
+            return {success: true, message: `Successfully purchased "${game.title}"!`};
         } else {
-            console.log(`Not enough balance to buy "${game.title}".`);
+            return {success: false, message: `Not enough balance to buy "${game.title}".`};
         }
     }
 
     downloadGame(game) {
         if (!(game instanceof Game)) {
-            console.log("Invalid game object.");
-            return;
+            return {success: false, message: "Invalid game object."};
         }
 
         if (this.isBanned()) {
-            console.log("You are banned and cannot download games.");
-            return;
+            return {success: false, message: "You are banned and cannot download games."};
         }
 
         if (!this.ownedGames.some(g => g.title === game.title)) {
-            console.log(`You need to purchase "${game.title}" before downloading it.`);
-            return;
+            return {success: false, message: `You need to purchase "${game.title}" before downloading it.`};
         }
 
         console.log(`Starting download for "${game.title}"...`);
         game.download();
+        return {success: true, message: `Download started for "${game.title}".`};
     }
 
     updateProfile(details) {
@@ -86,6 +79,7 @@ class User {
         this.password = newPassword;
         console.log("Password updated successfully!");
     }
+
 }
 
 module.exports = User;

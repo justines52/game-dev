@@ -1,12 +1,8 @@
-// Game.js
 class Game {
-    constructor(title, developer, price, downloads, rating, description, files = []) {
+    constructor(title, developer, price, files = []) {
         this.title = title;
         this.developer = developer;
         this.price = price;
-        this.downloads = downloads;
-        this.rating = rating;
-        this.description = description;
         this.files = files;
     }
 

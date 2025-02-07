@@ -1,4 +1,3 @@
-// Store.js
 const Game = require('./Game');
 
 class Store {
